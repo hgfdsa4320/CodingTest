@@ -5,6 +5,7 @@ public class Main{
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
         int[][] map = new int[n+1][m+1];
@@ -28,8 +29,8 @@ public class Main{
                     answer+=map[q][w];
                 }
             }
-            System.out.println(answer);
+            sb.append(answer).append("\n");
         }
-
+        System.out.println(sb.toString());
     }
 }
