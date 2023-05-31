@@ -6,16 +6,14 @@ public class Main{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        
         for(int i=0;i<n;i++){
-            pq.offer(Integer.parseInt(br.readLine()));
+            pq.add(Integer.parseInt(br.readLine()));
         }
         int answer=0;
         while(pq.size()>=2){
-            int a = pq.poll();
-            int b = pq.poll();
-            pq.offer(a+b);
-            answer+=a+b;
+            int tmp = pq.poll()+pq.poll();
+            answer+=tmp;
+            pq.offer(tmp);
         }
         System.out.println(answer);
     }
