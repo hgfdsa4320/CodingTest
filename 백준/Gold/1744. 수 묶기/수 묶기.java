@@ -4,41 +4,43 @@ import java.util.*;
 public class Main{
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int answer = 0;
         int n = Integer.parseInt(br.readLine());
-        PriorityQueue<Integer> plus = new PriorityQueue<>((a,b)->b-a);
-        PriorityQueue<Integer> minus = new PriorityQueue<>();
-        int answer=0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for(int i=0;i<n;i++){
-            int tmp = Integer.parseInt(br.readLine());
-            if(tmp<=0){
-                minus.add(tmp);
-            }else{
-                plus.add(tmp);
-            }
+            pq.add(Integer.parseInt(br.readLine()));
         }
-        
-        while(plus.size()>=2){
-            n = plus.poll();
-            int next = plus.poll();
-            if(n*next>n+next){
-                answer+=n*next;
-            }else{
-                answer+=n+next;
+        while(pq.size()>=2){
+            int a = pq.peek();
+            if(a>=0) break;
+            pq.poll();
+            int b = pq.peek();
+            if(b>0) {
+                pq.add(a);
+                break;
             }
+            pq.poll();
+            answer+=a*b;
         }
-        if(!plus.isEmpty()) answer+=plus.poll();
-        
-        while(minus.size()>=2){
-            n = minus.poll();
-            int next = minus.poll();
-            if(n*next>n+next){
-                answer+=n*next;
-            }else{
-                answer+=n+next;
+
+        PriorityQueue<Integer> pq2 = new PriorityQueue<>((a,b)->b-a);
+        while(!pq.isEmpty()){
+            pq2.add(pq.poll());
+        }
+        while(pq2.size()>=2){
+            int tmp = 0;
+            int a = pq2.poll();
+            int b = pq2.poll();
+            if (a <= 1 || b <= 1 ) {
+                tmp = a + b;
+            } else {
+                tmp = a * b;
             }
+            answer+=tmp;
         }
-        if(!minus.isEmpty()) answer+=minus.poll();
-        
+        while(!pq2.isEmpty()){
+            answer+=pq2.poll();
+        }
         System.out.println(answer);
     }
 }
