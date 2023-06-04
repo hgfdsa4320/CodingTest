@@ -3,9 +3,9 @@ class Solution {
         int answer = Integer.MAX_VALUE;
         int n = s.length();
         if(s.length()==1) return 1;
-        for(int i=1;i<=n/2;i++){
-            int idx=0;
-            int cnt=1;
+        for(int i=1;i<=n/2;i++){ //1부터 N/2개 단위로 자를 경우
+            int idx=0; 
+            int cnt=1; //반복횟수
             String tmp = s.substring(idx,idx+i);
             StringBuilder sb = new StringBuilder();
             while(idx+i*2<=n){
