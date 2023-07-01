@@ -3,7 +3,7 @@ import java.util.*;
 class Solution {
     static int[] arr = new int[11];
     static int[] answer;
-    static int max = 1; // 점수 차
+    static int max = 1; // 점수 차, 동점이면 어피치가 이기니까 초기값 1로 줌
     static boolean isPossible;
     public int[] solution(int n, int[] info) {
         answer = new int[11];
