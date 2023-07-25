@@ -9,11 +9,9 @@ public class Main{
         for(int i=1;i<=n;i++){
             q.offer(i);
         }
-        
         while(q.size()>1){
             q.poll();
-            int tmp = q.poll();
-            q.offer(tmp);
+            q.offer(q.poll());
         }
         System.out.println(q.poll());
     }
