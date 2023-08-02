@@ -1,42 +1,37 @@
 import java.io.*;
 import java.util.*;
 
-public class Main{
+public class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
-        for(int i=0;i<t;i++){
+        for(int tc = 0;tc<t;tc++){
             StringTokenizer st = new StringTokenizer(br.readLine());
             int n = Integer.parseInt(st.nextToken());
             int m = Integer.parseInt(st.nextToken());
-            
-            Queue<int[]> q = new LinkedList<>();
+            Queue<int[]> q = new LinkedList<>(); //{인덱스, 값}
             PriorityQueue<Integer> pq = new PriorityQueue<>((a,b)->b-a);
-            
             st = new StringTokenizer(br.readLine());
-            for(int j=0;j<n;j++){
+            for(int i=0;i<n;i++){
                 int tmp = Integer.parseInt(st.nextToken());
+                q.offer(new int[]{i,tmp});
                 pq.offer(tmp);
-                q.offer(new int[]{j,tmp});                
             }
-            int cnt=0;
-            Loop1:
-            while(!pq.isEmpty()){
-                while(!q.isEmpty()){
-                    int[] arr = q.poll();
-                    if(arr[1]==pq.peek()){
-                        cnt++;
-                        pq.poll();
-                        if(arr[0]==m){
-                            System.out.println(cnt);
-                            break Loop1;
-                        }
-                        
+            int cnt = 1;
+            while(true){
+                int[] arr = q.poll();                
+                if(arr[1]==pq.peek()){
+                    if(arr[0]==m){
+                        break;
                     }else{
-                        q.offer(new int[]{arr[0],arr[1]});
+                        pq.poll();
+                        cnt++;
                     }
+                }else{
+                    q.offer(arr);
                 }
             }
+            System.out.println(cnt);
         }
     }
 }
