@@ -2,63 +2,63 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	static int[] dx = { 0, 1, 0, -1 }; // 우하좌상
+	static int[] dx = { 0, 1, 0, -1 };
 	static int[] dy = { 1, 0, -1, 0 };
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int n = Integer.parseInt(br.readLine());
 		int k = Integer.parseInt(br.readLine());
-		int[][] map = new int[n+1][n+1];
+		int[][] map = new int[n + 1][n + 1];
 		for (int i = 0; i < k; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			map[a][b] = 1;
+			map[a][b] = 2;
 		}
 		int l = Integer.parseInt(br.readLine());
-		PriorityQueue<String[]> pq = new PriorityQueue<>((a,b)->Integer.parseInt(a[0])-Integer.parseInt(b[0]));
+		int d = 0;
+
+		Queue<String[]> q = new LinkedList<>();
 		for (int i = 0; i < l; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			int x = Integer.parseInt(st.nextToken());
-			String c = st.nextToken();
-			pq.offer(new String[] {String.valueOf(x),c});
+			String a = st.nextToken();
+			String dir = st.nextToken();
+			q.offer(new String[] { a, dir });
 		}
-		int t = 0;
-		int d = 0;
+		// 시작 위치
 		int x = 1;
 		int y = 1;
-		Queue<int[]> q = new LinkedList<>();
-		q.offer(new int[] {x,y});
-		map[x][y] = 2;
+		map[x][y] = 1;
+		int time = 0;
+		Deque<int[]> dq = new LinkedList<>();
+		dq.offer(new int[] {x,y});
+		
 		while (true) {
-			t++;
+			time++;
 			int nx = x + dx[d];
 			int ny = y + dy[d];
-			if (nx <= 0 || nx > n || ny <= 0 || ny > n || map[nx][ny] == 2) {
+			if (nx <= 0 || nx > n || ny <= 0 || ny > n || map[nx][ny] == 1)
 				break;
-			} else if (map[nx][ny] == 1) {
-				map[nx][ny] = 2;
-				x = nx;
-				y = ny;
-				q.offer(new int[] {nx,ny});
-			} else {
-				int[] place = q.poll();
-				map[place[0]][place[1]] = 0;
-				q.offer(new int[] {nx,ny});
-				map[nx][ny]=2;
-				x = nx;
-				y = ny;
+			if (map[nx][ny] == 0) {
+				int[] tmp = dq.pollLast();
+				int tx = tmp[0];
+				int ty = tmp[1];
+				map[tx][ty] = 0;
 			}
-			if(!pq.isEmpty() && t==Integer.parseInt(pq.peek()[0])) {
-				String[] tmp = pq.poll();
-				if(tmp[1].equals("L")) {
-					d = d==0?3:d-1;
-				}else {
-					d = (d+1)%4;
+			map[nx][ny] = 1;
+			dq.offerFirst(new int[] {nx,ny});
+			x = nx;
+			y = ny;
+			if (!q.isEmpty() && Integer.parseInt(q.peek()[0]) == time) {
+				if (q.poll()[1].equals("D")) {
+					d = d == 3 ? 0 : d + 1;
+				} else {
+					d = d == 0 ? 3 : d - 1;
 				}
 			}
 		}
-		System.out.println(t);
+		System.out.println(time);
+
 	}
 }
