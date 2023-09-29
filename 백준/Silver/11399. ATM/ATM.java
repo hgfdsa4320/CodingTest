@@ -1,22 +1,21 @@
-import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
-public class Main{
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i=0;i<n;i++){
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-        Arrays.sort(arr);
-        int answer = 0;
-        int now = 0;
-        for(int i=0;i<n;i++){
-            now+=arr[i];
-            answer+=now;
-        }
-        System.out.println(answer);
+public class Main {
+    static int time(int[] a,int N){
+        int t=0;
+        for(int i=0;i<N;i++)
+            t=t+(N-i)*a[i];
+        return t;
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int N=sc.nextInt();
+        int[] p=new int[N];
+        for(int i=0;i<N;i++)
+            p[i]=sc.nextInt();
+        Arrays.sort(p);
+        int k=time(p,N);
+        System.out.println(k);
     }
 }
