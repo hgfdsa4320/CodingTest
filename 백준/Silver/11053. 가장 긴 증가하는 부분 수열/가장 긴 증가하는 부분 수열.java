@@ -2,25 +2,52 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		int[] arr =new int[n];
-		int[] dp = new int[n];
-		StringTokenizer st= new StringTokenizer(br.readLine());
-		for(int i=0;i<n;i++) {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	
+	static ArrayList<Integer> lis = new ArrayList<>();
+	static int n;
+	static int[] arr;
+	
+	public static void input() throws Exception {
+		n = Integer.parseInt(br.readLine());
+		st = new StringTokenizer(br.readLine());
+		arr = new int[n];
+		for(int i=0; i<n; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		dp[0]=1;
-		for(int i=1;i<n;i++) {
-			for(int j=0;j<i;j++) {
-				dp[i] = Math.max(dp[i], arr[i]>arr[j]?dp[j]+1:1);	
+	}
+	
+	public static int get_lowerbound(int num) {
+		int left,right,mid;
+		left = 0;
+		right = lis.size();
+		while(left<right) {
+			mid = (left+right)/2;
+			if(lis.get(mid)<num) {
+				left = mid + 1;
+			} else {
+				right = mid;
 			}
 		}
-		int answer = 0;
-		for(int i=0;i<n;i++) {
-			answer = Math.max(answer, dp[i]);
+		return right;
+	}
+	
+	public static void solve() {
+		lis.add(arr[0]);
+		for(int i=1; i<n; i++) {
+			if(arr[i]>lis.get(lis.size()-1)) {
+				lis.add(arr[i]);
+			} else {
+				int index = get_lowerbound(arr[i]);
+				lis.set(index, arr[i]);
+			}
 		}
-		System.out.println(answer);
+		System.out.print(lis.size());
+	}
+	
+	public static void main(String[] args) throws Exception {
+		input();
+		solve();
 	}
 }
