@@ -33,15 +33,9 @@ public class Main {
             }
         }
 
-        long ans = Long.MAX_VALUE;
+        int ans = Integer.MAX_VALUE;
         for (int i = 1; i <= V; i++) {
-            for (int j = 1; j <= V; j++) {
-                if (i == j) {
-                    ans = Math.min(ans, arr[i][j]);
-                }else if (arr[i][j] != Integer.MAX_VALUE && arr[j][i] != Integer.MAX_VALUE) {
-                    ans = Math.min(ans, arr[i][j] + arr[j][i]);
-                }
-            }
+            ans = Math.min(ans, arr[i][i]);
         }
         if (ans == Integer.MAX_VALUE) {
             System.out.println(-1);
