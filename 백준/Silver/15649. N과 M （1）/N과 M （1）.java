@@ -13,9 +13,9 @@ public class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		arr = new int[M];
-		sb = new StringBuilder();
+		arr = new int[N + 1];
 		visited = new boolean[N + 1];
+		sb = new StringBuilder();
 		findArr(0);
 		System.out.println(sb);
 	}
@@ -28,7 +28,6 @@ public class Main {
 			sb.append("\n");
 			return;
 		}
-
 		for (int i = 1; i <= N; i++) {
 			if (!visited[i]) {
 				visited[i] = true;
