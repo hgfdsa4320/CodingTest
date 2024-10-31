@@ -1,70 +1,70 @@
-/**
-방문햇는지를 int[][] visited=> visited[x][y] = x,y방문에 드는 금액
--> 이 금액보다 작은 경우에만 q에 넣기
-현재 방향 d, 금액 price
-**/
 import java.util.*;
 
-class Info{
+class QInput{
     int x;
     int y;
     int d;
     int price;
-    public Info(int x,int y,int d,int price){
+    
+    public QInput(int x,int y,int d,int price){
         this.x=x;
         this.y=y;
         this.d=d;
         this.price= price;
     }
 }
+
 class Solution {
-    static int[] dx = {1,0,-1,0};
-    static int[] dy = {0,1,0,-1};
-    static int[][][] visited;
+    static int[] dx = {1,-1,0,0};// 하 상 우 좌
+    static int[] dy = {0,0,1,-1};
     static int n;
+    
+    static boolean isInMap(int x,int y){
+        if(x>=0 && x<n && y>=0 && y<n) return true;
+        return false;
+    }
+    
     public int solution(int[][] board) {
-        int answer = Integer.MAX_VALUE;
         n = board.length;
-        visited = new int[board.length][board[0].length][4];
-        for(int i=0;i<board.length;i++){
-            for(int j=0;j<board.length;j++){
-                Arrays.fill(visited[i][j],Integer.MAX_VALUE);    
-            }
-        }
-        
-        visited[0][0][0] = 0;
-        visited[0][0][1] = 0;
-        Queue<Info> q = new LinkedList<>();
-        q.offer(new Info(0,0,0,0));
-        q.offer(new Info(0,0,1,0));
-        
-        while(!q.isEmpty()){
-            Info info = q.poll();
-            int x = info.x;
-            int y = info.y;
-            int d = info.d;
-            int price = info.price;
-            if(x==board.length-1 && y==board[0].length-1){
-                answer = Math.min(answer,price);
-                System.out.println(answer);
-            }else{
-                for(int i=0;i<4;i++){
-                    int nx = x+dx[i];
-                    int ny = y+dy[i];
-                    if(!isInMap(nx,ny) || board[nx][ny]==1) continue;
-                    int nextPrice = price + 100 + (d==i?0:500);
-                    if(nextPrice<visited[nx][ny][i]){
-                        q.offer(new Info(nx,ny,i,nextPrice));
-                        visited[nx][ny][i] = nextPrice;
-                    }
+        int[][][] visited= new int[n][n][4];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                for(int k=0;k<4;k++){
+                    visited[i][j][k] = Integer.MAX_VALUE;
                 }
             }
         }
-        System.out.println(Arrays.deepToString(visited));
+        
+        Queue<QInput> q = new LinkedList<>();
+        q.offer(new QInput(0,0,2,0));
+        visited[0][0][2] = 0;
+        q.offer(new QInput(0,0,0,0));
+        visited[0][0][0] = 0; 
+        
+        int answer = Integer.MAX_VALUE;
+        
+        while(!q.isEmpty()){
+            QInput p = q.poll();
+            int x = p.x;
+            int y = p.y;
+            int d = p.d;
+            int price = p.price;
+            if(x==n-1 && y==n-1){
+                answer = Math.min(answer,price);
+            }
+            for(int i=0;i<4;i++){
+                int nx = x+dx[i];
+                int ny = y+dy[i];
+                if(!isInMap(nx,ny) || board[nx][ny]==1)
+                    continue;
+                int nextPrice = price+(i==d?100:600);
+                if(visited[nx][ny][i]>nextPrice){
+                    visited[nx][ny][i] = nextPrice;
+                    q.offer(new QInput(nx,ny,i,nextPrice));
+                }
+            }
+        }
         return answer;
-    }
-    static boolean isInMap(int x,int y){
-        if(x>=0 && x<n && y>=0 &&y<n) return true;
-        return false;
+        
     }
 }
